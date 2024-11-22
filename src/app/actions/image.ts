@@ -11,3 +11,9 @@ export const PostImageDetails = async (data: { src: string }) => {
 
   return ad;
 };
+
+export const GetAllImageDetails = async () => {
+  const ad = await prisma.images.findMany();
+
+  return ad;
+};

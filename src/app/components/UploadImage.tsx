@@ -11,7 +11,6 @@ import { PostImageDetails } from "../actions/image";
 export default function UploadImage() {
   const [imageUpload, setImageUpload] = useState(false);
   const [imageUrl, setImageUrl] = useState<string[]>([]);
-  const [isImageInCloud, setIsImageInCloud] = useState(false);
   const handleImageUpload = async (file: File) => {
     const salt = Date.now();
     const extension = path.extname(file.name);
@@ -22,7 +21,7 @@ export default function UploadImage() {
     await PostImageDetails({ src: saltedName });
 
     try {
-      let data = new FormData();
+      const data = new FormData();
       data.append("file", file, saltedName);
 
       const res = await fetch("/api/s3-upload", {
@@ -38,7 +37,6 @@ export default function UploadImage() {
               "image" + salt.toString() + extension
             }`,
           ]);
-          setIsImageInCloud(true);
           toast.success("Image Uploaded to Cloud");
         })
         .catch((e) => {

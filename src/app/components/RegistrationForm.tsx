@@ -37,7 +37,7 @@ export default function RegistrationForm() {
       email: "",
     },
   });
-  const onSubmit: SubmitHandler<RegisterType> = async (data) => {};
+  const onSubmit: SubmitHandler<RegisterType> = async () => {};
   return (
     <div className="w-3/5 mx-auto">
       <Form {...form}>
