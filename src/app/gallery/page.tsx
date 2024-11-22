@@ -7,7 +7,7 @@ export default async function page() {
   return (
     <div>
       {images.map((i) => (
-        <ImageDisplay src={i.src} />
+        <ImageDisplay key={i.id} src={i.src} />
       ))}
     </div>
   );
