@@ -1,4 +1,5 @@
 import { Camera } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function NavBar() {
@@ -10,8 +11,9 @@ export default function NavBar() {
           Wedding Uploads
         </div>
         <div className="flex gap-2 items-center">
-          <p>Gallery</p>
-          <p>Admin</p>
+          <Link href={"/"}>Upload</Link>
+          <Link href={"/gallery"}>Gallery</Link>
+          <Link href={"/admin"}>Admin</Link>
         </div>
       </div>
     </nav>
