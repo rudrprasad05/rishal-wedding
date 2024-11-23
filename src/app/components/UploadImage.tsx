@@ -11,47 +11,53 @@ import { PostImageDetails } from "../actions/image";
 export default function UploadImage() {
   const [imageUpload, setImageUpload] = useState(false);
   const [imageUrl, setImageUrl] = useState<string[]>([]);
-  const handleImageUpload = async (file: File) => {
-    const salt = Date.now();
-    const extension = path.extname(file.name);
-    const saltedName = "image" + salt.toString() + extension;
+  const handleImageUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
     setImageUpload(true);
-    if (!file) return;
-
-    await PostImageDetails({ src: saltedName });
-
     const mb = 1_048_576;
 
-    try {
-      if (file.size > mb * 50) {
-        toast.error("Image too big. Limit 10mb");
-        return;
-      }
-      const data = new FormData();
-      data.append("file", file, saltedName);
+    for (const file of Array.from(files)) {
+      const salt = Date.now();
+      const extension = path.extname(file.name);
+      const saltedName = "image" + salt.toString() + extension;
 
-      const res = await fetch("/api/s3-upload", {
-        method: "POST",
-        body: data,
-      })
-        .then((e) => {
-          console.log(e);
-          setImageUpload(false);
-          setImageUrl((prev) => [
-            ...prev,
-            `https://mctechfiji.s3.amazonaws.com/wedding/${
-              "image" + salt.toString() + extension
-            }`,
-          ]);
-          toast.success("Image Uploaded to Cloud");
+      if (!file) return;
+
+      await PostImageDetails({ src: saltedName });
+
+      try {
+        if (file.size > mb * 50) {
+          toast.error("Image too big. Limit 10mb");
+          return;
+        }
+        const data = new FormData();
+        data.append("file", file, saltedName);
+
+        const res = await fetch("/api/s3-upload", {
+          method: "POST",
+          body: data,
         })
-        .catch((e) => {
-          toast("Something went wrong", { description: "Contact site admin" });
-        });
-      // handle the error
-    } catch (e: any) {
-      // Handle errors here
-      console.error(e);
+          .then((e) => {
+            console.log(e);
+            setImageUpload(false);
+            setImageUrl((prev) => [
+              ...prev,
+              `https://mctechfiji.s3.amazonaws.com/wedding/${
+                "image" + salt.toString() + extension
+              }`,
+            ]);
+            toast.success("Image Uploaded to Cloud");
+          })
+          .catch((e) => {
+            toast("Something went wrong", {
+              description: "Contact site admin",
+            });
+          });
+        // handle the error
+      } catch (e: any) {
+        // Handle errors here
+        console.error(e);
+      }
     }
   };
   const testimg = [
@@ -60,17 +66,6 @@ export default function UploadImage() {
   ];
   return (
     <div className="flex flex-col items-center w-[200px] mx-auto justify-center">
-      <div className="flex flex-col gap-4">
-        {imageUrl.map((src, i) => (
-          <div key={i} className="w-full">
-            <img
-              className="aspect-square w-full object-contain rounded-md"
-              src={src}
-              alt="img"
-            />
-          </div>
-        ))}
-      </div>
       <div className="w-full mt-6">
         <label
           htmlFor="file"
@@ -86,16 +81,28 @@ export default function UploadImage() {
           </div>
           <input
             id="file"
+            multiple
             type="file"
             accept="image/*"
             name="file"
             disabled={imageUpload}
             hidden
             onChange={(e) => {
-              handleImageUpload(e.target.files?.[0] as File);
+              handleImageUpload(e.target.files);
             }}
           />
         </label>
+      </div>
+      <div className="flex flex-col gap-4 mt-4">
+        {imageUrl.map((src, i) => (
+          <div key={i} className="w-full">
+            <img
+              className="aspect-square w-full object-cover rounded-md"
+              src={src}
+              alt="img"
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

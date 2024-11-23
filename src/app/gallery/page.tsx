@@ -6,8 +6,8 @@ export default async function page() {
   const images = await GetAllImageDetails();
   console.log(images.length);
   return (
-    <>
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 w-4/5 mx-auto mt-12">
+    <div className="bg-green-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-40 pt-24 h-min-screen">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 w-4/5 mx-auto">
         {images.map((i) => (
           <ImageDisplay
             key={i.id}
@@ -22,6 +22,6 @@ export default async function page() {
           <p>No images yet. Upload some</p>
         </div>
       )}
-    </>
+    </div>
   );
 }
