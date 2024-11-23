@@ -18,7 +18,16 @@ export const GetAllImageDetails = async () => {
     skip: undefined,
     where: {},
   });
-  console.log(ad);
+
+  return ad;
+};
+
+export const DeleteOneImage = async (id: number) => {
+  const ad = await prisma.images.delete({
+    where: {
+      id,
+    },
+  });
 
   return ad;
 };

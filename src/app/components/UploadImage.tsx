@@ -93,7 +93,7 @@ export default function UploadImage() {
           />
         </label>
       </div>
-      <div className="flex flex-col gap-4 mt-4">
+      {/* <div className="flex flex-col gap-4 mt-4">
         {imageUrl.map((src, i) => (
           <div key={i} className="w-full">
             <img
@@ -103,7 +103,7 @@ export default function UploadImage() {
             />
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
