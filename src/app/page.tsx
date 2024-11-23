@@ -12,10 +12,10 @@ import Image from "next/image";
 export default function page() {
   return (
     <div
-      className="w-screen h-screen bg-no-repeat bg-contain bg-center bg-green-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 border border-gray-100 "
+      className="w-screen h-screen bg-no-repeat bg-contain bg-center bg-green-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20"
       style={{ backgroundImage: "url('bg.jpg')" }}
     >
-      <div className="mt-24">
+      <div className="pt-24">
         <h1 className="text-3xl font-bold text-center w-4/5 mx-auto">
           Engagement of Shaniel & Pritika
         </h1>
