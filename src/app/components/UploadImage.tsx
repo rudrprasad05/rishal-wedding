@@ -20,7 +20,13 @@ export default function UploadImage() {
 
     await PostImageDetails({ src: saltedName });
 
+    const mb = 1_048_576;
+
     try {
+      if (file.size > mb * 50) {
+        toast.error("Image too big. Limit 10mb");
+        return;
+      }
       const data = new FormData();
       data.append("file", file, saltedName);
 
@@ -53,7 +59,7 @@ export default function UploadImage() {
     "https://mctechfiji.s3.us-east-1.amazonaws.com/wedding/image1732313381621.png",
   ];
   return (
-    <div className="flex flex-col items-center mt-12 w-3/5 mx-auto justify-center">
+    <div className="flex flex-col items-center w-[200px] mx-auto justify-center">
       <div className="flex flex-col gap-4">
         {imageUrl.map((src, i) => (
           <div key={i} className="w-full">
@@ -81,6 +87,7 @@ export default function UploadImage() {
           <input
             id="file"
             type="file"
+            accept="image/*"
             name="file"
             disabled={imageUpload}
             hidden

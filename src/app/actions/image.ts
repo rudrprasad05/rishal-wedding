@@ -13,7 +13,12 @@ export const PostImageDetails = async (data: { src: string }) => {
 };
 
 export const GetAllImageDetails = async () => {
-  const ad = await prisma.images.findMany();
+  const ad = await prisma.images.findMany({
+    take: undefined, // No limit
+    skip: undefined,
+    where: {},
+  });
+  console.log(ad);
 
   return ad;
 };
